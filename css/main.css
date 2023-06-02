@@ -1,0 +1,52 @@
+@charset "utf-8";
+
+/*
+ * File       : main.css
+ * Author     : 김선익
+ *
+ * Dependency : css/reset.css
+ *
+ * SUMMARY:
+ * 00) Global
+ * 00) Movie Card
+ */
+ 
+
+ /* **************************************** *
+ * 00) Global
+ * **************************************** */
+ body{
+    background-color: #141414;
+    color: #fff;
+ }
+ .global__inner{
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+ }
+
+  /* **************************************** *
+ * 01) Movie Card
+ * **************************************** */
+ .movie__list{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px,1fr));
+    grid-gap: 20px;
+ }
+ .movie__poster{
+    width: 100%;
+ }
+ .movie__title{
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 8px 0;
+}
+ .movie__des{
+    font-size: 16px;
+    font-weight: 300;
+ }
+ .movie__vote_average{
+    color: yellow;
+    font-size: 16px;
+ }

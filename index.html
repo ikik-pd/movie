@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, height=device-height, width=device-width">
+
+    <!-- SEO -->
+    <title>영화추천 | 내일배움캠프 React 6기 1조</title>
+    <meta name="title" content="영화추천 | 내일배움캠프 React 6기 1조">
+    <meta name="description" content="바닐라JS를 이용한 영화추천 사이트">
+    <meta name="keywords" content="내일배움캠프, 스파르타코딩클럽, 부트캠프">
+    <!-- <link rel="shortcut icon" href="./img/favicon.png"> -->
+
+    <meta property="og:title" content="영화추천 | 내일배움캠프 React 6기 1조">
+    <meta property="og:description" content="바닐라JS를 이용한 영화추천 사이트">
+
+    <!-- CSS -->
+    <link rel="stylesheet" id="reset-css" href="./css/reset.css?ver=1.0.0" type="text/css">
+    <link rel="stylesheet" id="main-css" href="./css/main.css?ver=1.0.0" type="text/css">
+
+    <!-- JS -->
+    <script id="main-js" src="./js/main.js?ver=1.0.0"></script>
+
+    <body>
+        
+        <!--
+            (1) 필수요구사항    
+             [1] jQuery 라이브러리 사용없이 순수 바닐라 자바스크립트 사용하기
+             [2] TMDB 오픈 API를 이용하여 인기영화 데이터 가져오기
+             [3] 영화정보 카드 리스트 UI 구현
+                 - 카드에는 title(제목), overview(내용 요약), poster_path(포스터 이미지 경로), vote_average(평점) 이렇게 4가지 정보가 필수로 들어갑니다.
+                 - 카드 클릭 시에는 클릭한 영화 id 를 나타내는 alert 창을 띄웁니다.
+             [4] 영화 검색 UI 구헌 
+                 - API로 받아온 전체 영화들 중 영화 제목에 input 창에 입력한 문자값이 포함되는 영화들만 화면에 보이도록 합니다. 
+                 - 입력 후 검색버튼 클릭 시 실행되도록 합니다.
+             [5] 하기 기재된 Javascript 문법 요소를 이용하여 구현
+        -->
+        <main id="main">
+            <div class="global__inner">
+                <ul class="movie__list"></ul>
+            </div>
+        </main>
+     
+        <script>
+            const movie__list = document.getElementsByClassName("movie__list")[0];
+
+            const movie_list_item = (cards) => {
+                movie__list.innerHTMl = "";
+
+                movie__list.innerHTML = cards.reduce((movie_items, movie_item) => {
+                    const {id, poster_path, title, overview, vote_average} = movie_item;
+
+                    return (movie_items += `
+                        <li class="movie__llist__item"> 
+                            <div onclick="alert('영화 id : ${id}')">
+                                <img class="movie__poster" src="https://image.tmdb.org/t/p/w500/${poster_path}" alt="${title}">
+                                <p class="movie__vote_average">rating : ${vote_average}</p>
+                            </div>
+                            <div class="movie__content">
+                                <h3 class="movie__title">${title}</h2>
+                                <p class="movie__desc">${overview}</p>
+                            </div>
+                        </li>
+                    `);
+                }, "");
+
+            };
+
+            const fetch_move = async (rest_url) => {
+                const { results } = await fetch(
+                    `https://api.themoviedb.org/3/${rest_url}`,
+                    {
+                        headers: {
+                            accept: 'application/json',
+                            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNzNhYWVkN2JmYmYwMmZkNzA3MjVlYWY0YjA3N2VlNCIsInN1YiI6IjY0NzkzZTVkOTM4MjhlMDEzMzc2YjBkZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1LNm99rIE54CXYQ8BW1cka-hLB3qyvt9DjNdI7G8p6s'
+                        },
+                    }
+                ).then((response) => response.json()); 
+                    
+                return results;
+            };
+
+            const load_movie = async () => {
+                const cards = await fetch_move("movie/popular");
+                movie_list_item(cards);
+            };
+
+            load_movie();
+
+            
+        </script>
+    </body>
+</html>
